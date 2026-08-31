@@ -9,6 +9,11 @@ Plug 'tpope/vim-commentary'    " gc/gcc comment toggling; minimal, low-maintenan
 
 call plug#end()
 
+" Ctrl+/ toggles a comment, matching VS Code's default keybinding. Terminals
+" deliver Ctrl+/ as the control code 0x1F, which Vim sees as <C-_>.
+nmap <C-_> gcc
+xmap <C-_> gc
+
 syntax on
 filetype plugin indent on
 
