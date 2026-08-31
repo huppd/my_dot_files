@@ -1,43 +1,38 @@
-execute pathogen#infect()
+" ~/.vim/vimrc
+" Plugins managed with vim-plug (https://github.com/junegunn/vim-plug).
+" plug.vim is vendored in autoload/; plugins install into ~/.vim/plugged/
+" (gitignored) via: vim +PlugInstall +qall
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'tpope/vim-commentary'    " gc/gcc comment toggling; minimal, low-maintenance replacement for nerdcommenter
+
+call plug#end()
 
 syntax on
-filetype on
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
-" treat tikz as tex files
-au BufNewFile,BufRead *.tikz set filetype=tex
-
-set number " shows line number
+set number
 set tw=90
 
-" indent
+" indentation
 set expandtab
 set shiftwidth=2
 set tabstop=2
-set autoindent
-set smartindent 
-set cindent
-set cinoptions+=l1   " for switch case alignement
-set cinoptions+=N-s  " for namespace no indentation
-set cinoptions+=g0   " for classes no indentation 
-set cinoptions+=g-1
-
+set cindent            " C-style auto-indent; supersedes autoindent/smartindent (see :help ai)
+set cinoptions+=l1      " align case labels with switch
+set cinoptions+=N-s     " no extra indent inside namespaces
+set cinoptions+=g-1     " access modifiers in classes indented one level less
 
 " spell checker
-"set spell spelllang=en_us,de_ch
+set spell spelllang=en_us,de_ch
 
+" minimal statusline (no plugin)
+set laststatus=2
+set statusline=%f\ %m%r%h%w%=%y\ [%{&fileencoding?&fileencoding:&encoding}]\ %l:%c\ %P
 
-" NERDTree
-let g:NERDTreeWinSize=25
-
-
-"This mapping uses <cword> to get the word under the cursor, and searches for
-"it in the current directory and all subdirectories, opening the quickfix
-"window when done
+" search the word under the cursor across the project, into the quickfix list
 map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
-
 
 " fortran
 let fortran_do_enddo=1
-

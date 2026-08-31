@@ -1,0 +1,9 @@
+# vim-plug installs plugins here at runtime; not vendored in git
+/plugged/
+
+# transient vim state that can end up inside this directory
+*.swp
+*.swo
+*.swn
+*~
+.netrwhist
