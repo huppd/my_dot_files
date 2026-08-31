@@ -41,4 +41,4 @@ To add one: add a `Plug '...'` line in `vimrc`, then `vim +PlugInstall +qall`
   vendored so `en_us,de_ch` spell-check works with no network access) and
   `en.utf-8.add` (personal word additions; `:mkspell` regenerates
   `en.utf-8.add.spl` after editing it).
-- `ftplugin/` — per-filetype tweaks (python, fortran, xml).
+- `ftplugin/` — per-filetype tweaks (python, fortran).
