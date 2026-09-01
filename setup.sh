@@ -99,4 +99,24 @@ else
   warn "no $CLAUDE_REPO_FILE in repo; skipping Claude settings sync"
 fi
 
+# --- 5. ~/.bashrc: source portable bash customizations --------------------
+BASHRC_TARGET="$HOME/.bashrc"
+BASHRC_SRC="$VIM_DIR/bashrc"
+BASHRC_MARKER="# >>> my_dot_files bashrc >>>"
+
+if [ -f "$BASHRC_SRC" ]; then
+  if [ -f "$BASHRC_TARGET" ] && grep -qF "$BASHRC_MARKER" "$BASHRC_TARGET"; then
+    log "$BASHRC_TARGET already sources $BASHRC_SRC, skipping"
+  else
+    log "appending source line for $BASHRC_SRC to $BASHRC_TARGET"
+    {
+      printf '\n%s\n' "$BASHRC_MARKER"
+      printf '[ -f "%s" ] && . "%s"\n' "$BASHRC_SRC" "$BASHRC_SRC"
+      printf '# <<< my_dot_files bashrc <<<\n'
+    } >> "$BASHRC_TARGET"
+  fi
+else
+  warn "no $BASHRC_SRC in repo; skipping bashrc sourcing"
+fi
+
 log "done."

@@ -21,6 +21,8 @@ That's it. Re-run `~/.vim/setup.sh` any time — it's safe to run repeatedly.
 - Syncs the portable keys (`editorMode`, `theme`) from `claude/settings.json`
   into `~/.claude/settings.json`, without touching any machine-local
   `permissions` already set there.
+- Appends a one-line `source ~/.vim/bashrc` to `~/.bashrc` (guarded by a
+  marker, added once), without touching anything else already there.
 
 ## Plugins
 
@@ -42,3 +44,9 @@ To add one: add a `Plug '...'` line in `vimrc`, then `vim +PlugInstall +qall`
   `en.utf-8.add` (personal word additions; `:mkspell` regenerates
   `en.utf-8.add.spl` after editing it).
 - `ftplugin/` — per-filetype tweaks (python, fortran).
+- `bashrc` — portable bash customizations (extended history, git branch in
+  the prompt), sourced from `~/.bashrc` by `setup.sh`. Kept separate from
+  the real `~/.bashrc` so machine-specific bits (conda init, corporate
+  profile sourcing, editor env vars, PATH tweaks, ...) never end up here.
+- `git-prompt.sh` — vendored upstream (GPLv2) so `__git_ps1` works with no
+  network access; used by `bashrc`.
