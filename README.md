@@ -23,6 +23,10 @@ That's it. Re-run `~/.vim/setup.sh` any time — it's safe to run repeatedly.
   `permissions` already set there.
 - Appends a one-line `source ~/.vim/bashrc` to `~/.bashrc` (guarded by a
   marker, added once), without touching anything else already there.
+- Patches portable keys from `vscode/settings.json` into VS Code's and/or
+  VSCodium's `settings.json` (whichever are installed), as a text edit
+  rather than a JSON rewrite — that file is JSONC (comments, trailing
+  commas), so anything already there is left exactly as-is.
 
 ## Plugins
 
@@ -50,3 +54,5 @@ To add one: add a `Plug '...'` line in `vimrc`, then `vim +PlugInstall +qall`
   profile sourcing, editor env vars, PATH tweaks, ...) never end up here.
 - `git-prompt.sh` — vendored upstream (GPLv2) so `__git_ps1` works with no
   network access; used by `bashrc`.
+- `vscode/settings.json` — portable VS Code/VSCodium settings, patched into
+  the real `settings.json` by `setup.sh`.

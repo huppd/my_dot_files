@@ -119,4 +119,57 @@ else
   warn "no $BASHRC_SRC in repo; skipping bashrc sourcing"
 fi
 
+# --- 6. VS Code / VSCodium settings.json: ensure portable keys are set ----
+# settings.json is JSONC (comments, trailing commas allowed), so it's not
+# safely parseable/rewritable as strict JSON. Patch it as text instead of
+# parsing it, so anything already there (comments included) is left alone.
+VSCODE_REPO_FILE="$VIM_DIR/vscode/settings.json"
+VSCODE_TARGETS="$HOME/.config/Code/User/settings.json $HOME/.config/VSCodium/User/settings.json"
+
+if [ -f "$VSCODE_REPO_FILE" ] && command -v python3 >/dev/null 2>&1; then
+  for target in $VSCODE_TARGETS; do
+    if [ -f "$target" ]; then
+      cp "$target" "$target.bak.${TS}"
+      if python3 - "$VSCODE_REPO_FILE" "$target" <<'PYEOF'
+import json, re, sys
+
+repo_path, target_path = sys.argv[1], sys.argv[2]
+with open(repo_path) as f:
+    repo = json.load(f)
+with open(target_path) as f:
+    text = f.read()
+
+changed = False
+for key, value in repo.items():
+    replacement = '"%s": %s' % (key, json.dumps(value))
+    # only handles scalar values (bool/number/string), which is all portable
+    # editor toggles need
+    pattern = re.compile(r'"%s"\s*:\s*[^,}\n]*' % re.escape(key))
+    if pattern.search(text):
+        new_text = pattern.sub(replacement, text, count=1)
+    else:
+        new_text = re.sub(r'\{', '{\n  %s,' % replacement, text, count=1)
+    if new_text != text:
+        text = new_text
+        changed = True
+
+if changed:
+    with open(target_path, "w") as f:
+        f.write(text)
+print("changed" if changed else "unchanged")
+PYEOF
+      then
+        log "synced portable keys into $target"
+      else
+        warn "failed to sync $VSCODE_REPO_FILE into $target; restoring backup"
+        mv "$target.bak.${TS}" "$target"
+      fi
+    else
+      log "$target not present (editor not installed here?), skipping"
+    fi
+  done
+elif [ -f "$VSCODE_REPO_FILE" ]; then
+  warn "python3 not found; skipping VS Code settings sync"
+fi
+
 log "done."
