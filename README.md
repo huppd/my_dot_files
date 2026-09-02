@@ -56,3 +56,10 @@ To add one: add a `Plug '...'` line in `vimrc`, then `vim +PlugInstall +qall`
   network access; used by `bashrc`.
 - `vscode/settings.json` — portable VS Code/VSCodium settings, patched into
   the real `settings.json` by `setup.sh`.
+
+## License
+
+This repository is MIT licensed (see `LICENSE`), except for vendored
+third-party files, which keep their original license:
+
+- `git-prompt.sh` — Git project, GPLv2 (see file header).
