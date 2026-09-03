@@ -10,12 +10,12 @@ shopt -s histappend      # append to the history file, don't overwrite it
 HISTSIZE=100000
 HISTFILESIZE=200000
 
+BASHRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # --- git branch in prompt ---------------------------------------------------
 # Vendored git-prompt.sh (upstream, GPLv2) defines __git_ps1; without it
 # some machines won't have it available at all.
-BASHRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 [ -f "$BASHRC_DIR/git-prompt.sh" ] && . "$BASHRC_DIR/git-prompt.sh"
-unset BASHRC_DIR
 
 # user@host, cwd (cropped to the last ~20 chars if long), git branch in red
 export PS1='\u@\h \[\e[32m\]$(echo "${PWD}" | awk -F/ '\''{if(length($0) > 23) {n=length($0); printf "...%s",substr($0,n-20,n)} else {print $0}}'\'') \[\e[91m\]$(__git_ps1)\[\e[00m\]$ '
@@ -25,3 +25,11 @@ export PS1='\u@\h \[\e[32m\]$(echo "${PWD}" | awk -F/ '\''{if(length($0) > 23) {
 export VISUAL=code
 export EDITOR=code
 export SPACK_EDITOR=code
+
+# --- manual dotfiles refresh -------------------------------------------
+# Deliberately manual, not automatic: on offline HPC nodes a pull/PlugInstall
+# on every shell startup would just hang, and auto-running whatever's in the
+# repo on every new shell is more blast radius than we want unattended.
+alias my_dot_up="git -C '$BASHRC_DIR' pull --ff-only && '$BASHRC_DIR/setup.sh' && exec bash"
+
+unset BASHRC_DIR

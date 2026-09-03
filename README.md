@@ -51,7 +51,11 @@ To add one: add a `Plug '...'` line in `vimrc`, then `vim +PlugInstall +qall`
 - `bashrc` — portable bash customizations (extended history, git branch in
   the prompt), sourced from `~/.bashrc` by `setup.sh`. Kept separate from
   the real `~/.bashrc` so machine-specific bits (conda init, corporate
-  profile sourcing, editor env vars, PATH tweaks, ...) never end up here.
+  profile sourcing, PATH tweaks, ...) never end up here. Also defines
+  `my_dot_up`, a manual `git pull --ff-only && setup.sh && exec bash` — kept
+  manual rather than automatic-on-shell-start since a pull/PlugInstall on
+  every shell would hang on offline HPC nodes, and auto-running whatever's
+  in the repo unattended is more blast radius than warranted.
 - `git-prompt.sh` — vendored upstream (GPLv2) so `__git_ps1` works with no
   network access; used by `bashrc`.
 - `vscode/settings.json` — portable VS Code/VSCodium settings, patched into
