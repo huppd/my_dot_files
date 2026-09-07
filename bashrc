@@ -32,4 +32,7 @@ export SPACK_EDITOR=code
 # repo on every new shell is more blast radius than we want unattended.
 alias my_dot_up="git -C '$BASHRC_DIR' pull --ff-only && '$BASHRC_DIR/setup.sh' && exec bash"
 
+# --- storage usage helper -----------------------------------------------
+alias storage_size="'$BASHRC_DIR/storage_size.sh'"
+
 unset BASHRC_DIR

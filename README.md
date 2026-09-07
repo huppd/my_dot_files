@@ -60,6 +60,11 @@ To add one: add a `Plug '...'` line in `vimrc`, then `vim +PlugInstall +qall`
   network access; used by `bashrc`.
 - `vscode/settings.json` — portable VS Code/VSCodium settings, patched into
   the real `settings.json` by `setup.sh`.
+- `storage_size.sh` — "what is eating my quota?": `storage_size.sh [DIR]`
+  lists every top-level entry of `DIR` (default `.`), files *and*
+  directories, hidden ones included, with its disk usage, largest first,
+  plus a total at the end. `-h` for help. Not touched by `setup.sh`; run it
+  directly (`~/.vim/storage_size.sh ~/scratch`).
 
 ## License
 
