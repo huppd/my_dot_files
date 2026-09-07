@@ -26,6 +26,14 @@ export VISUAL=code
 export EDITOR=code
 export SPACK_EDITOR=code
 
+# --- uv cache on CSCS scratch --------------------------------------------
+# Home quotas on these clusters are small; keep uv's cache on scratch instead.
+case "$(hostname -s 2>/dev/null)" in
+    balfrin*|santis*|linard*)
+        export UV_CACHE_DIR="/scratch/mch/$USER/.cache/uv"
+        ;;
+esac
+
 # --- manual dotfiles refresh -------------------------------------------
 # Deliberately manual, not automatic: on offline HPC nodes a pull/PlugInstall
 # on every shell startup would just hang, and auto-running whatever's in the
