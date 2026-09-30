@@ -69,17 +69,37 @@ if [ -f "$CLAUDE_REPO_FILE" ]; then
     log "no existing $CLAUDE_TARGET, creating it from repo defaults"
     cp "$CLAUDE_REPO_FILE" "$CLAUDE_TARGET"
   else
-    log "merging repo keys (editorMode, theme) into existing $CLAUDE_TARGET"
+    log "merging repo keys (editorMode, theme, permissions) into existing $CLAUDE_TARGET"
     cp "$CLAUDE_TARGET" "$CLAUDE_TARGET.bak.${TS}"
     if command -v python3 >/dev/null 2>&1; then
       if python3 - "$CLAUDE_REPO_FILE" "$CLAUDE_TARGET" <<'PYEOF'
 import json, sys
+
 repo_path, target_path = sys.argv[1], sys.argv[2]
 with open(repo_path) as f:
     repo = json.load(f)
 with open(target_path) as f:
     local = json.load(f)
-local.update(repo)   # repo values win for the synced keys only
+
+# permissions.{allow,deny,ask} are unioned (not replaced), so repo-added
+# rules never clobber machine-local ones already present
+if "permissions" in repo:
+    local_perms = dict(local.get("permissions", {}))
+    for key, repo_list in repo["permissions"].items():
+        if key in ("allow", "deny", "ask"):
+            merged = list(local_perms.get(key, []))
+            for item in repo_list:
+                if item not in merged:
+                    merged.append(item)
+            local_perms[key] = merged
+        else:
+            local_perms[key] = repo_list
+    local["permissions"] = local_perms
+
+for key, value in repo.items():
+    if key != "permissions":
+        local[key] = value   # repo values win for the other synced keys
+
 with open(target_path, "w") as f:
     json.dump(local, f, indent=2)
     f.write("\n")

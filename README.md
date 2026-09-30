@@ -19,8 +19,10 @@ That's it. Re-run `~/.vim/setup.sh` any time — it's safe to run repeatedly.
 - Installs plugins via vim-plug (vendored in `autoload/plug.vim`) into
   `~/.vim/plugged/`.
 - Syncs the portable keys (`editorMode`, `theme`) from `claude/settings.json`
-  into `~/.claude/settings.json`, without touching any machine-local
-  `permissions` already set there.
+  into `~/.claude/settings.json`. `permissions.{allow,deny,ask}` are unioned
+  with whatever's already there instead, so repo-added rules (e.g. denying
+  `git commit`/`git push` for Claude Code globally) never clobber
+  machine-local permission rules already set there.
 - Appends a one-line `source ~/.vim/bashrc` to `~/.bashrc` (guarded by a
   marker, added once), without touching anything else already there.
 - Patches portable keys from `vscode/settings.json` into VS Code's and/or

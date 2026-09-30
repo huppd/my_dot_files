@@ -1,4 +1,14 @@
 {
   "editorMode": "vim",
-  "theme": "auto"
+  "theme": "auto",
+  "permissions": {
+    "deny": [
+      "Bash(git commit *)",
+      "Bash(git commit)",
+      "Bash(git push *)",
+      "Bash(git push)",
+      "Bash(git -C * commit *)",
+      "Bash(git -C * push *)"
+    ]
+  }
 }
