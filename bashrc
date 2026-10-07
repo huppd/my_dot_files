@@ -43,4 +43,19 @@ alias my_dot_up="git -C '$BASHRC_DIR' pull --ff-only && '$BASHRC_DIR/setup.sh' &
 # --- storage usage helper -----------------------------------------------
 alias storage_size="'$BASHRC_DIR/storage_size.sh'"
 
+# --- tmux session per folder ----------------------------------------------
+# `t` attaches to the tmux session named after the current folder, creating
+# it if needed; `t name` uses an explicit name. tmux forbids '.' and ':' in
+# session names, so they become '_'. Inside tmux it switches instead of nesting.
+t() {
+    local name="${1:-$(basename "$PWD")}"
+    name="${name//[.:]/_}"
+    if [ -n "$TMUX" ]; then
+        tmux has-session -t "=$name" 2>/dev/null || tmux new-session -d -s "$name"
+        tmux switch-client -t "=$name"
+    else
+        tmux new-session -A -s "$name"
+    fi
+}
+
 unset BASHRC_DIR

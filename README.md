@@ -91,7 +91,12 @@ What you get in an open file:
   `my_dot_up`, a manual `git pull --ff-only && setup.sh && exec bash` — kept
   manual rather than automatic-on-shell-start since a pull/PlugInstall on
   every shell would hang on offline HPC nodes, and auto-running whatever's
-  in the repo unattended is more blast radius than warranted.
+  in the repo unattended is more blast radius than warranted. Also defines
+  `t`, a tmux helper: `t` attaches to the session named after the current
+  folder, creating it if it doesn't exist yet; `t NAME` does the same for an
+  explicit name. `.` and `:` in the name become `_` (tmux rejects them), and
+  inside tmux it switches sessions instead of nesting. Needs `tmux`
+  installed.
 - `git-prompt.sh` — vendored upstream (GPLv2) so `__git_ps1` works with no
   network access; used by `bashrc`.
 - `vscode/settings.json` — portable VS Code/VSCodium settings, patched into
