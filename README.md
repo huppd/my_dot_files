@@ -33,9 +33,43 @@ That's it. Re-run `~/.vim/setup.sh` any time — it's safe to run repeatedly.
 ## Plugins
 
 - tpope/vim-commentary — `gc`/`gcc` to (un)comment
+- tpope/vim-fugitive — git integration; `:Git blame` opens a per-line blame pane
+  (`<Enter>` open commit, `~` re-blame parent, `o` open in split)
+- airblade/vim-gitgutter — `+`/`~`/`-` signs next to uncommitted changes in the open
+  file; `]c`/`[c` jump between hunks, `<leader>hp` preview, `<leader>hu` undo,
+  `<leader>hs` stage
+- `plugin/blameline.vim` (local, no install) — GitLens-style inline blame for the
+  cursor line (`:BlameLineToggle`); needs Vim 9.1+
 
 To add one: add a `Plug '...'` line in `vimrc`, then `vim +PlugInstall +qall`
 (or re-run `setup.sh`).
+
+## Git in Vim (GitLens-style)
+
+Setup on a machine that already has this repo:
+
+```
+my_dot_up                    # git pull --ff-only && setup.sh && exec bash
+# or, by hand:
+cd ~/.vim && git pull --ff-only && vim +PlugInstall +qall
+```
+
+`PlugInstall` fetches fugitive and gitgutter from GitHub (see Limitations for
+offline nodes). `plugin/blameline.vim` comes with the repo and needs no install.
+Check with `vim --version | head -1`: inline blame needs Vim 9.1+ and silently
+stays off on older Vims; fugitive and gitgutter work on older versions too.
+
+What you get in an open file:
+
+- inline blame for the cursor line (`author, 3 days ago • summary`), shown
+  after the cursor rests for `updatetime` (set to 500 ms in `vimrc`)
+- gitgutter signs plus whole-line highlights for uncommitted changes
+  (`g:gitgutter_highlight_lines = 1`; `:GitGutterLineHighlightsToggle` for the
+  session). If the colors clash with the color scheme, override
+  `GitGutterAddLine` / `GitGutterChangeLine` / `GitGutterDeleteLine` with
+  `:highlight` in `vimrc`
+- `:Git blame` for the whole file, `:Git` for status, `:Gdiffsplit` to diff
+  against the last commit
 
 ## Limitations
 
