@@ -4,5 +4,5 @@
   "chat.commandCenter.enabled": false,
   "gitlens.showWelcomeOnInstall": false,
   "gitlens.showWhatsNewAfterUpgrades": false,
-  "workbench.startupEditor": "none"
+  "workbench.startupEditor": "welcomePageInEmptyWorkbench"
 }
