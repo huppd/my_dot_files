@@ -1,3 +1,8 @@
 {
-  "chat.agent.enabled": false
+  "chat.agent.enabled": false,
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "chat.commandCenter.enabled": false,
+  "gitlens.showWelcomeOnInstall": false,
+  "gitlens.showWhatsNewAfterUpgrades": false,
+  "workbench.startupEditor": "none"
 }
